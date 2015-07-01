@@ -22,7 +22,7 @@ class Tetris
     @board.show_board
 
     #stops until press enter
-    gets
+    
     end
 
   end
@@ -34,27 +34,41 @@ class Tetris
 
   end
 
-  def move
-
-    move=distance_left
-    #j+move<20
+  def check_empty
     bottom=19
-
+    begin
     @shapes.each_with_index do |spots, index|
-
       if spots[0]!=0
-
         for i in (0..spots[0]-1)
-
-          while @board.field[bottom-index][move+i] != "0"
-            bottom -= 1
-          end
-
-            @board.field[bottom-index][move+i] = "-"
-
+            if @board.field[bottom-index][move+i] != "0" 
+              bottom-=1
+              retry 
+            end
         end
       end
     end
+    bottom
+  end
+
+ 
+
+  def put_shape(bottom)
+    @shapes.each_with_index do |spots, index|
+      if spots[0]!=0
+        for i in (0..spots[0]-1)
+            @board.field[bottom-index][move+i] = "-"
+        end
+      end
+    end
+  end
+  def move
+
+    move=distance_left
+  
+    bottom=check_empty
+    put_shape(bottom)
+    
+    
   end
 
 end
